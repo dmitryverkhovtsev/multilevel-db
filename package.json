@@ -1,0 +1,25 @@
+{
+  "name": "multilevel-db",
+  "version": "1.1.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "standard"
+  },
+  "keywords": [],
+  "author": "David Guttman <david@guttman.io> (http://davidguttman.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "level": "^1.4.0",
+    "multileveldown": "^1.1.2",
+    "productionize": "^2.0.0"
+  },
+  "devDependencies": {
+    "standard": "^8.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.lincx.la:apps/multilevel-db.git"
+  },
+  "description": "DB service using http://npm.im/multileveldown"
+}
