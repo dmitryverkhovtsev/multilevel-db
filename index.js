@@ -6,6 +6,7 @@ var path = require('path')
 var level = require('level')
 var multileveldown = require('multileveldown')
 
+var DB_CLOSED = process.env.DB_CLOSED === 'true'
 var DB = process.env.DB || path.join(__dirname, 'db')
 var db = level(DB)
 
@@ -15,7 +16,9 @@ var server = net.createServer(function (sock) {
     if (err) return console.error(err)
   })
 
-  sock.pipe(multileveldown.server(db)).pipe(sock)
+  if (!DB_CLOSED) {
+    sock.pipe(multileveldown.server(db)).pipe(sock)
+  }
 })
 
 var PORT = process.env.PORT || 9000
