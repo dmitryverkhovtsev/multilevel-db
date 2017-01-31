@@ -8,7 +8,8 @@ var multileveldown = require('multileveldown')
 
 var DB_CLOSED = process.env.DB_CLOSED === 'true'
 var DB = process.env.DB || path.join(__dirname, 'db')
-var db = level(DB)
+
+var db = DB_CLOSED ? {} : level(DB)
 
 var server = net.createServer(function (sock) {
   sock.on('error', function (err) {
