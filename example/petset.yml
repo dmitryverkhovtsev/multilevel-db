@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: multilevel-db-test
+---
+apiVersion: storage.k8s.io/v1beta1
+kind: StorageClass
+metadata:
+  name: default
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multilevel-db-test
+  labels:
+    app: multilevel-db-test
+spec:
+  ports:
+  - port: 9000
+  clusterIP: None
+  selector:
+    app: multilevel-db-test
+---
+apiVersion: apps/v1alpha1
+kind: PetSet
+metadata:
+  name: multilevel-db-test
+  labels:
+    app: multilevel-db-test
+spec:
+  serviceName: multilevel-db-test
+  replicas: 1
+  template:
+    metadata:
+      name: multilevel-db-test
+      labels:
+        app: multilevel-db-test
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+        # ^ see http://kubernetes.io/docs/user-guide/petset/#troubleshooting
+    spec:
+      serviceAccountName: multilevel-db-test
+      containers:
+        - name: multilevel-db-test
+          image: interlincx/multilevel-db:v2.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9000
+              name: db
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          env:
+            - name: DB
+              value: /data
+            - name: DB_NAME
+              value: 'multilevel-db-test'
+            - name: PORT
+              value: '9000'
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      annotations:
+        volume.alpha.kubernetes.io/storage-class: default
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+          requests:
+              storage: 10Gi
