@@ -15,6 +15,7 @@ var server = net.createServer(function (sock) {
   sock.on('error', function (err) {
     sock.destroy()
     if (err) return console.error(err)
+    process.exit(1)
   })
 
   if (!DB_CLOSED) {
