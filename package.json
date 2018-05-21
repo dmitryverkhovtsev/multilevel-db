@@ -1,6 +1,6 @@
 {
   "name": "multilevel-db",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
