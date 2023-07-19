@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "build": "docker build -t interlincx/multilevel-db:$npm_package_version .",
-    "test": "standard"
+    "test": "tape ./test/*.js && standard"
   },
   "keywords": [],
   "author": "David Guttman <david@guttman.io> (http://davidguttman.com/)",
@@ -16,7 +16,10 @@
     "productionize": "^2.0.0"
   },
   "devDependencies": {
-    "standard": "^8.6.0"
+    "async": "^3.2.4",
+    "cuid": "^3.0.0",
+    "standard": "^8.6.0",
+    "tape": "^5.6.5"
   },
   "repository": {
     "type": "git",

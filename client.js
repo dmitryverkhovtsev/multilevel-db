@@ -1,7 +1,7 @@
 var net = require('net')
 var multileveldown = require('multileveldown')
 
-module.exports = function (opts) {
+module.exports = function (opts, reconnectAttempts = Infinity) {
   var db = multileveldown.client({
     retry: true,
     valueEncoding: opts.valueEncoding
@@ -16,7 +16,8 @@ module.exports = function (opts) {
     })
 
     sock.on('close', function () {
-      setTimeout(connect, 1000)
+      reconnectAttempts--
+      reconnectAttempts >= 0 && setTimeout(connect, 1000)
     })
 
     sock.pipe(db.connect()).pipe(sock)
